@@ -1,0 +1,27 @@
+set number
+  2 syntax  on
+  3 call plug#begin('~/.vim/plugged')
+  4 Plug 'w0rp/ale'
+  5 Plug 'omnisharp/omnisharp-vim'
+  6 Plug 'valloric/youcompleteme'
+  7 Plug 'tpope/vim-surround'
+  8 Plug 'scrooloose/nerdtree'
+  9 Plug 'chriskempson/base16-vim'
+ 10 call plug#end()
+ 11 
+ 12 "omnisharp to use on .cs file-----
+ 13 let g:OmniSharp_server_stdio = 1
+ 14 let g:ale_linters = { 'cs': ['OmniSharp'] }
+ 15 let g:OmniSharp_highlight_types = 2
+ 16 
+ 17 let g:OmniSharp_server_stdio_quickload = 1
+ 18 
+ 19 "Nerdtree open automatically when start up
+ 20 "autocmd vimenter * NERDTree
+ 21 map <F5> :NERDTreeToggle<cr>
+ 22 "ctrl-l = next
+ 23 map <C-l> :tabn<cr>
+ 24 "ctrl+h for tab left and ctrl+l for tab right
+ 25 map <C-h> :tabp<cr>
+ 26 "ctrl-h = previous
+ 
