@@ -1,25 +1,36 @@
 set number
 syntax  enable
+"highligh search
 set hlsearch
+"ctag
+set tags=tags
+:set tabstop=4
+:set shiftwidth=4
+:set expandtab
 "syntax enable
 "set background=dark
 "colorscheme solarized
 " If installed using git
+" base16 luna wombat  
+" bubblegum
+let g:airline_theme='bubblegum'
 call plug#begin('~/.vim/plugged')
+Plug 'leafgarland/typescript-vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'tpope/vim-surround'
 Plug 'scrooloose/nerdtree'
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-
-
-Plug 'leafgarland/typescript-vim'
+Plug 'rust-lang/rust.vim'
 Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 
 Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
 
+"tablemode
+Plug 'dhruvasagar/vim-table-mode'
 
 " snipmate
 Plug 'MarcWeber/vim-addon-mw-utils'
@@ -27,6 +38,7 @@ Plug 'tomtom/tlib_vim'
 Plug 'garbas/vim-snipmate'
 
 Plug 'honza/vim-snippets'
+
 call plug#end()
 
 "disable ident
@@ -34,7 +46,7 @@ call plug#end()
 
 "Nerdtree open automatically when start up
 "autocmd vimenter * NERDTree
-"map <C-t> :NERDTreeToggle<cr>
+map <F3> :NERDTreeToggle<cr>
 "ctrl-l = next
 map <C-L> :tabn<cr>
 "ctrl+h for tab left and ctrl+l for tab right
@@ -47,30 +59,61 @@ map <F2> :tab new<cr>
 "inoremap ( ()<Esc>i
 """"""""""""Bracer handling"""""""""""""""
 "inoremap { {}<Esc>i
+inoremap <C-\> ()<Esc>i
+inoremap <C-l> {<CR><CR>}<Esc>ki
 "inoremap < <><Esc>i
 "inoremap [ []<Esc>i
 """""""""""Bracer handling"""""""""""""""
+:nnoremap <leader>w :w<CR>
+:nnoremap <leader>' f'ci' 
+:nnoremap <leader>" f"ci" 
+:nnoremap <leader>{ f{ci{ 
+:nnoremap <leader>( f(ci( 
+:nnoremap <leader>nh :noh<CR>
+:nnoremap <leader>nu :set nu!<CR>
+:nnoremap <leader>1 vaw"1y<CR>
+:nnoremap <leader>2 vaw"2y<CR>
+:nnoremap <leader>fn i(){<CR>}<Esc>k_
+:nnoremap <leader>pu ipublic $ {get;set;}<Esc>_f$cw
+" remove blank line
+:nnoremap <leader>9 :g/^\s*$/d<CR>
+":nnoremap <leader>4 :%s/^\_s\+/\r/g<CR>
+
+
+
+
+:imap jk <Esc>
 "buffer tab
 "map <C-l>  :bn<cr>
 "map <C-h>  :bp<cr>
 
 "Enable true colors
-if exists('+termguicolors')
-  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-  set termguicolors
-endif
+ if exists('+termguicolors')
+   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+   set termguicolors
+ endif
 
 "English Dictionary for writing a document!
 au FileType * execute 'setlocal dict+=~/.vim/words/'.&filetype.'.txt'.'.md'
+"set dictionary+=/usr/share/dict/thaiword
 set dictionary+=/usr/share/dict/words
 
 
 "font setup
 set guifont=ProggyClean
 
+" add html syntax to dotnet razor files
+"autocmd BufNewFile,BufRead *.cshtml set syntax=html
 
-
+" persistence fold
+autocmd BufWinLeave *.* mkview
+autocmd BufWinEnter *.* silent loadview 
+" 
+" leafgarland typescript
+let g:typescript_compiler_binary = 'tsc'
+"
+"
 "markdown config
 filetype plugin on
 "let g:instant_markdown_browser = "firefox --new-window"
