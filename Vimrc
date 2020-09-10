@@ -40,13 +40,12 @@ Plug 'garbas/vim-snipmate'
 Plug 'honza/vim-snippets'
 
 call plug#end()
-
 "disable ident
 "let g:typescript_indent_disable = 1
 
 "Nerdtree open automatically when start up
 "autocmd vimenter * NERDTree
-map <F3> :NERDTreeToggle<cr>
+"map <F3> :NERDTreeToggle<cr>
 "ctrl-l = next
 map <C-L> :tabn<cr>
 "ctrl+h for tab left and ctrl+l for tab right
@@ -64,25 +63,35 @@ inoremap <C-l> {<CR><CR>}<Esc>ki
 "inoremap < <><Esc>i
 "inoremap [ []<Esc>i
 """""""""""Bracer handling"""""""""""""""
-:nnoremap <leader>w :w<CR>
-:nnoremap <leader>' f'ci' 
-:nnoremap <leader>" f"ci" 
-:nnoremap <leader>{ f{ci{ 
-:nnoremap <leader>( f(ci( 
-:nnoremap <leader>nh :noh<CR>
-:nnoremap <leader>nu :set nu!<CR>
-:nnoremap <leader>1 vaw"1y<CR>
-:nnoremap <leader>2 vaw"2y<CR>
+:nnoremap <leader>w :w<cr>
+:nnoremap <leader>' f'ci'
+:nnoremap <leader>" f"ci"
+:nnoremap <leader>{ f{ci{
+:nnoremap <leader>( f(ci(
+:nnoremap <leader>nh :noh<cr>
+:nnoremap <leader>nu :set nu!<cr>
+":nnoremap <leader>1 vaw"1y<CR>
+":nnoremap <leader>2 vaw"2y<CR>
 :nnoremap <leader>fn i(){<CR>}<Esc>k_
 :nnoremap <leader>pu ipublic $ {get;set;}<Esc>_f$cw
 " remove blank line
 :nnoremap <leader>9 :g/^\s*$/d<CR>
+" vim grep command find parrtern word  in current directory
+:nnoremap <leader>g :vimgrep //\c **<left><left><left><left><left><left>
 ":nnoremap <leader>4 :%s/^\_s\+/\r/g<CR>
+:nnoremap <leader>l :cw<CR>
+:nnoremap <leader>1 :cnext<CR>
+:nnoremap <leader>2 :cprev<CR>
+" Datetime Insert mode
+:map! <F4> <C-R>=strftime('%F')<CR>
 
+"visual mode map
+:vnoremap <leader>i :norm!<space>
+"visual mode remove get set property
+:vnoremap <leader>rr :norm!<space>fpd2wf{df}<CR>
+"transform word into json format
+:vnoremap <leader>js :norm wysiw"A: "$",<CR>
 
-
-
-:imap jk <Esc>
 "buffer tab
 "map <C-l>  :bn<cr>
 "map <C-h>  :bp<cr>
@@ -108,7 +117,7 @@ set guifont=ProggyClean
 
 " persistence fold
 autocmd BufWinLeave *.* mkview
-autocmd BufWinEnter *.* silent loadview 
+autocmd BufWinEnter *.* silent loadview
 " 
 " leafgarland typescript
 let g:typescript_compiler_binary = 'tsc'
