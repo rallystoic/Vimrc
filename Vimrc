@@ -15,10 +15,10 @@ set tags=tags
 " bubblegum
 let g:airline_theme='bubblegum'
 call plug#begin('~/.vim/plugged')
-Plug 'leafgarland/typescript-vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'OmniSharp/omnisharp-vim'
 Plug 'tpope/vim-surround'
-Plug 'scrooloose/nerdtree'
+"Plug 'scrooloose/nerdtree'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
@@ -29,17 +29,19 @@ Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 
 Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
 
+" Debugger
+Plug 'puremourning/vimspector'
+
 "tablemode
 Plug 'dhruvasagar/vim-table-mode'
 
 " snipmate
-Plug 'MarcWeber/vim-addon-mw-utils'
-Plug 'tomtom/tlib_vim'
-Plug 'garbas/vim-snipmate'
+Plug 'SirVer/ultisnips'
 
 Plug 'honza/vim-snippets'
 
 call plug#end()
+
 "disable ident
 "let g:typescript_indent_disable = 1
 
@@ -64,10 +66,10 @@ inoremap <C-l> {<CR><CR>}<Esc>ki
 "inoremap [ []<Esc>i
 """""""""""Bracer handling"""""""""""""""
 :nnoremap <leader>w :w<cr>
-:nnoremap <leader>' f'ci'
-:nnoremap <leader>" f"ci"
-:nnoremap <leader>{ f{ci{
-:nnoremap <leader>( f(ci(
+:nnoremap <leader>' f'ci' 
+:nnoremap <leader>" f"ci" 
+:nnoremap <leader>{ f{ci{ 
+:nnoremap <leader>( f(ci( 
 :nnoremap <leader>nh :noh<cr>
 :nnoremap <leader>nu :set nu!<cr>
 ":nnoremap <leader>1 vaw"1y<CR>
@@ -91,7 +93,7 @@ inoremap <C-l> {<CR><CR>}<Esc>ki
 :vnoremap <leader>rr :norm!<space>fpd2wf{df}<CR>
 "transform word into json format
 :vnoremap <leader>js :norm wysiw"A: "$",<CR>
-
+	
 "buffer tab
 "map <C-l>  :bn<cr>
 "map <C-h>  :bp<cr>
@@ -116,8 +118,8 @@ set guifont=ProggyClean
 "autocmd BufNewFile,BufRead *.cshtml set syntax=html
 
 " persistence fold
-autocmd BufWinLeave *.* mkview
-autocmd BufWinEnter *.* silent loadview
+"autocmd BufWinLeave *.* mkview
+"autocmd BufWinEnter *.* silent loadview 
 " 
 " leafgarland typescript
 let g:typescript_compiler_binary = 'tsc'
@@ -137,3 +139,35 @@ filetype plugin on
 "let g:instant_markdown_autoscroll = 0
 "let g:instant_markdown_port = 8090
 "let g:instant_markdown_python = 1
+"
+"
+"
+"
+" omnisharp c#
+set updatetime=500
+
+sign define OmniSharpCodeActions text=💡
+
+augroup OSCountCodeActions
+    autocmd!
+    autocmd FileType cs set signcolumn=yes
+    autocmd CursorHold *.cs call OSCountCodeActions()
+augroup END
+
+function! OSCountCodeActions() abort
+    if bufname('%') ==# '' || OmniSharp#FugitiveCheck() | return | endif
+    if !OmniSharp#IsServerRunning() | return | endif
+    let opts = {
+                \ 'CallbackCount': function('s:CBReturnCount'),
+                \ 'CallbackCleanup': {-> execute('sign unplace 99')}
+                \}
+    call OmniSharp#actions#codeactions#Count(opts)
+endfunction
+
+function! s:CBReturnCount(count) abort
+    if a:count
+        let l = getpos('.')[1]
+        let f = expand('%:p')
+        execute ':sign place 99 line='.l.' name=OmniSharpCodeActions file='.f
+    endif
+endfunction
