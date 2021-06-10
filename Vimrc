@@ -1,6 +1,6 @@
 set number
 syntax  enable
-"highligh search
+"highligh search 
 set hlsearch
 "ctag
 set tags=tags
